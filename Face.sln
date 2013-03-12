@@ -5,6 +5,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FaceTrain", "FaceTrain\Face
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FaceDetect", "FaceDetect\FaceDetect.vcxproj", "{F8348A11-F436-4E25-A33E-881BA402DCF2}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FaceDetect-OpenCV", "FaceDetect-OpenCV\FaceDetect-OpenCV.vcxproj", "{C85CAF4B-BE6C-49A9-AE59-2E7DECA90EB8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -19,6 +21,10 @@ Global
 		{F8348A11-F436-4E25-A33E-881BA402DCF2}.Debug|Win32.Build.0 = Debug|Win32
 		{F8348A11-F436-4E25-A33E-881BA402DCF2}.Release|Win32.ActiveCfg = Release|Win32
 		{F8348A11-F436-4E25-A33E-881BA402DCF2}.Release|Win32.Build.0 = Release|Win32
+		{C85CAF4B-BE6C-49A9-AE59-2E7DECA90EB8}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C85CAF4B-BE6C-49A9-AE59-2E7DECA90EB8}.Debug|Win32.Build.0 = Debug|Win32
+		{C85CAF4B-BE6C-49A9-AE59-2E7DECA90EB8}.Release|Win32.ActiveCfg = Release|Win32
+		{C85CAF4B-BE6C-49A9-AE59-2E7DECA90EB8}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
