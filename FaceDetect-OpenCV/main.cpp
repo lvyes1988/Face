@@ -1,46 +1,67 @@
-#define CV_NO_BACKWARD_COMPATIBILITY
+#include "opencv2/objdetect/objdetect.hpp"
+#include "opencv2/highgui/highgui.hpp"
+#include "opencv2/imgproc/imgproc.hpp"
 
-#include "cv.h"
-#include "highgui.h"
-
+#include <cctype>
 #include <iostream>
-#include <cstdio>
-
-#ifdef _EiC
-#define WIN32
-#endif
+#include <iterator>
+#include <stdio.h>
 
 using namespace std;
 using namespace cv;
 
-void detectAndDraw( Mat& img,
-                   CascadeClassifier& cascade, CascadeClassifier& nestedCascade,
-                   double scale);
+static void help()
+{
+    cout << "\nThis program demonstrates the cascade recognizer. Now you can use Haar or LBP features.\n"
+            "This classifier can recognize many kinds of rigid objects, once the appropriate classifier is trained.\n"
+            "It's most known use is for faces.\n"
+            "Usage:\n"
+            "./facedetect [--cascade=<cascade_path> this is the primary trained classifier such as frontal face]\n"
+               "   [--nested-cascade[=nested_cascade_path this an optional secondary classifier such as eyes]]\n"
+               "   [--scale=<image scale greater or equal to 1, try 1.3 for example>]\n"
+               "   [--try-flip]\n"
+               "   [filename|camera_index]\n\n"
+            "see facedetect.cmd for one call:\n"
+            "./facedetect --cascade=\"../../data/haarcascades/haarcascade_frontalface_alt.xml\" --nested-cascade=\"../../data/haarcascades/haarcascade_eye.xml\" --scale=1.3\n\n"
+            "During execution:\n\tHit any key to quit.\n"
+            "\tUsing OpenCV version " << CV_VERSION << "\n" << endl;
+}
 
-String cascadeName =
-"haarcascade_frontalface_alt.xml";
-String nestedCascadeName =
-"haarcascade_eye_tree_eyeglasses.xml";
+void detectAndDraw( Mat& img, CascadeClassifier& cascade,
+                    CascadeClassifier& nestedCascade,
+                    double scale, bool tryflip );
+
+string cascadeName = "haarcascade_frontalface_alt.xml";
+string nestedCascadeName = "haarcascade_eye_tree_eyeglasses.xml";
 
 int main( int argc, const char** argv )
 {
     CvCapture* capture = 0;
     Mat frame, frameCopy, image;
-    const String scaleOpt = "--scale=";
+    const string scaleOpt = "--scale=";
     size_t scaleOptLen = scaleOpt.length();
-    const String cascadeOpt = "--cascade=";
+    const string cascadeOpt = "--cascade=";
     size_t cascadeOptLen = cascadeOpt.length();
-    const String nestedCascadeOpt = "--nested-cascade";
+    const string nestedCascadeOpt = "--nested-cascade";
     size_t nestedCascadeOptLen = nestedCascadeOpt.length();
-    String inputName;
+    const string tryFlipOpt = "--try-flip";
+    size_t tryFlipOptLen = tryFlipOpt.length();
+    string inputName;
+    bool tryflip = false;
+
+    help();
 
     CascadeClassifier cascade, nestedCascade;
     double scale = 1;
 
     for( int i = 1; i < argc; i++ )
     {
+        cout << "Processing " << i << " " <<  argv[i] << endl;
         if( cascadeOpt.compare( 0, cascadeOptLen, argv[i], cascadeOptLen ) == 0 )
+        {
             cascadeName.assign( argv[i] + cascadeOptLen );
+            cout << "  from which we have cascadeName= " << cascadeName << endl;
+        }
         else if( nestedCascadeOpt.compare( 0, nestedCascadeOptLen, argv[i], nestedCascadeOptLen ) == 0 )
         {
             if( argv[i][nestedCascadeOpt.length()] == '=' )
@@ -52,6 +73,12 @@ int main( int argc, const char** argv )
         {
             if( !sscanf( argv[i] + scaleOpt.length(), "%lf", &scale ) || scale < 1 )
                 scale = 1;
+            cout << " from which we read scale = " << scale << endl;
+        }
+        else if( tryFlipOpt.compare( 0, tryFlipOptLen, argv[i], tryFlipOptLen ) == 0 )
+        {
+            tryflip = true;
+            cout << " will try to flip image horizontally to detect assymetric objects\n";
         }
         else if( argv[i][0] == '-' )
         {
@@ -61,38 +88,37 @@ int main( int argc, const char** argv )
             inputName.assign( argv[i] );
     }
 
-    FILE *in;
-    in = fopen(cascadeName.c_str(), "r");
-    assert(in);
-    fclose(in);
-    in = fopen(nestedCascadeName.c_str(), "r");
-    assert(in);
-    fclose(in);
     if( !cascade.load( cascadeName ) )
     {
         cerr << "ERROR: Could not load classifier cascade" << endl;
-        cerr << "Usage: facedetect [--cascade=\"<cascade_path>\"]\n"
-            "   [--nested-cascade[=\"nested_cascade_path\"]]\n"
-            "   [--scale[=<image scale>\n"
-            "   [filename|camera_index]\n" ;
+        help();
         return -1;
     }
 
-    if( inputName.empty() || (isdigit(inputName.c_str()[0]) && inputName.c_str()[1] == '\0') )
-        capture = cvCaptureFromCAM( inputName.empty() ? 0 : inputName.c_str()[0] - '0' );
-    else if( inputName.size() )
+    if( !nestedCascade.load( nestedCascadeName ) )
     {
-        image = imread( inputName, 1 );
-        if( image.empty() )
-            capture = cvCaptureFromAVI( inputName.c_str() );
+        cerr << "ERROR: Could not load classifier cascade" << endl;
+        help();
+        return -1;
+    }
+
+    if( inputName.empty() && (isdigit(inputName.c_str()[0]) && inputName.c_str()[1] == '\0') )
+    {
+        capture = cvCaptureFromCAM( inputName.empty() ? 0 : inputName.c_str()[0] - '0' );
+        int c = inputName.empty() ? 0 : inputName.c_str()[0] - '0' ;
+        if(!capture) cout << "Capture from CAM " <<  c << " didn't work" << endl;
     }
     else
-        image = imread( "lena.jpg", 1 );
+    {
+        image = cvLoadImage( "lena.jpg", 1 );
+        if(image.empty()) cout << "Couldn't read lena.jpg" << endl;
+    }
 
     cvNamedWindow( "result", 1 );
 
     if( capture )
     {
+        cout << "In capture ..." << endl;
         for(;;)
         {
             IplImage* iplImg = cvQueryFrame( capture );
@@ -104,21 +130,23 @@ int main( int argc, const char** argv )
             else
                 flip( frame, frameCopy, 0 );
 
-            detectAndDraw( frameCopy, cascade, nestedCascade, scale );
+            detectAndDraw( frameCopy, cascade, nestedCascade, scale, tryflip );
 
             if( waitKey( 10 ) >= 0 )
                 goto _cleanup_;
         }
 
         waitKey(0);
+
 _cleanup_:
         cvReleaseCapture( &capture );
     }
     else
     {
+        cout << "In image read" << endl;
         if( !image.empty() )
         {
-            detectAndDraw( image, cascade, nestedCascade, scale );
+            detectAndDraw( image, cascade, nestedCascade, scale, tryflip );
             waitKey(0);
         }
         else if( !inputName.empty() )
@@ -139,10 +167,14 @@ _cleanup_:
                     image = imread( buf, 1 );
                     if( !image.empty() )
                     {
-                        detectAndDraw( image, cascade, nestedCascade, scale );
+                        detectAndDraw( image, cascade, nestedCascade, scale, tryflip );
                         c = waitKey(0);
                         if( c == 27 || c == 'q' || c == 'Q' )
                             break;
+                    }
+                    else
+                    {
+                        cerr << "Aw snap, couldn't read image " << buf << endl;
                     }
                 }
                 fclose(f);
@@ -155,13 +187,14 @@ _cleanup_:
     return 0;
 }
 
-void detectAndDraw( Mat& img,
-                   CascadeClassifier& cascade, CascadeClassifier& nestedCascade,
-                   double scale)
+void detectAndDraw( Mat& img, CascadeClassifier& cascade,
+                    CascadeClassifier& nestedCascade,
+                    double scale, bool tryflip )
 {
     int i = 0;
     double t = 0;
-    vector<Rect> faces;
+    vector<Rect> faces, faces2;
+    CascadeClassifier nosecascade, mouthcascade;
     const static Scalar colors[] =  { CV_RGB(0,0,255),
         CV_RGB(0,128,255),
         CV_RGB(0,255,255),
@@ -184,19 +217,52 @@ void detectAndDraw( Mat& img,
         |CV_HAAR_SCALE_IMAGE
         ,
         Size(30, 30) );
+    if( tryflip )
+    {
+        flip(smallImg, smallImg, 1);
+        cascade.detectMultiScale( smallImg, faces2,
+                                 1.1, 2, 0
+                                 //|CV_HAAR_FIND_BIGGEST_OBJECT
+                                 //|CV_HAAR_DO_ROUGH_SEARCH
+                                 |CV_HAAR_SCALE_IMAGE
+                                 ,
+                                 Size(30, 30) );
+        for( vector<Rect>::const_iterator r = faces2.begin(); r != faces2.end(); r++ )
+        {
+            faces.push_back(Rect(smallImg.cols - r->x - r->width, r->y, r->width, r->height));
+        }
+    }
     t = (double)cvGetTickCount() - t;
     printf( "detection time = %g ms\n", t/((double)cvGetTickFrequency()*1000.) );
+
+    if( !nosecascade.load( "haarcascade_mcs_mouth.xml" ) )
+    {
+        cerr << "ERROR: Could not load classifier cascade" << endl;
+    }
+    if( !nosecascade.load( "haarcascade_mcs_nose.xml" ) )
+    {
+        cerr << "ERROR: Could not load classifier cascade" << endl;
+    }
     for( vector<Rect>::const_iterator r = faces.begin(); r != faces.end(); r++, i++ )
     {
         Mat smallImgROI;
-        vector<Rect> nestedObjects;
+        vector<Rect> nestedObjects, noseObjects, mouthObjects;
         Point center;
         Scalar color = colors[i%8];
         int radius;
-        center.x = cvRound((r->x + r->width*0.5)*scale);
-        center.y = cvRound((r->y + r->height*0.5)*scale);
-        radius = cvRound((r->width + r->height)*0.25*scale);
-        circle( img, center, radius, color, 3, 8, 0 );
+
+        double aspect_ratio = (double)r->width/r->height;
+        if( 0.75 < aspect_ratio && aspect_ratio < 1.3 )
+        {
+            center.x = cvRound((r->x + r->width*0.5)*scale);
+            center.y = cvRound((r->y + r->height*0.5)*scale);
+            radius = cvRound((r->width + r->height)*0.25*scale);
+            circle( img, center, radius, colors[0], 3, 8, 0 );
+        }
+        else
+            rectangle( img, cvPoint(cvRound(r->x*scale), cvRound(r->y*scale)),
+                       cvPoint(cvRound((r->x + r->width-1)*scale), cvRound((r->y + r->height-1)*scale)),
+                       colors[0], 3, 8, 0);
         if( nestedCascade.empty() )
             continue;
         smallImgROI = smallImg(*r);
@@ -213,8 +279,40 @@ void detectAndDraw( Mat& img,
             center.x = cvRound((r->x + nr->x + nr->width*0.5)*scale);
             center.y = cvRound((r->y + nr->y + nr->height*0.5)*scale);
             radius = cvRound((nr->width + nr->height)*0.25*scale);
-            circle( img, center, radius, color, 3, 8, 0 );
+            circle( img, center, radius, colors[1], 3, 8, 0 );
         }
-    }  
-    cv::imshow( "result", img );    
+
+        nosecascade.detectMultiScale( smallImgROI, noseObjects,
+            1.1, 2, 0
+            //|CV_HAAR_FIND_BIGGEST_OBJECT
+            //|CV_HAAR_DO_ROUGH_SEARCH
+            //|CV_HAAR_DO_CANNY_PRUNING
+            |CV_HAAR_SCALE_IMAGE
+            ,
+            Size(30, 30) );
+        for( vector<Rect>::const_iterator nr = noseObjects.begin(); nr != noseObjects.end(); nr++ )
+        {
+            center.x = cvRound((r->x + nr->x + nr->width*0.5)*scale);
+            center.y = cvRound((r->y + nr->y + nr->height*0.5)*scale);
+            radius = cvRound((nr->width + nr->height)*0.25*scale);
+            circle( img, center, radius, colors[2], 3, 8, 0 );
+        }
+
+        mouthcascade.detectMultiScale( smallImgROI, mouthObjects,
+            1.1, 2, 0
+            //|CV_HAAR_FIND_BIGGEST_OBJECT
+            //|CV_HAAR_DO_ROUGH_SEARCH
+            //|CV_HAAR_DO_CANNY_PRUNING
+            |CV_HAAR_SCALE_IMAGE
+            ,
+            Size(30, 30) );
+        for( vector<Rect>::const_iterator nr = mouthObjects.begin(); nr != mouthObjects.end(); nr++ )
+        {
+            center.x = cvRound((r->x + nr->x + nr->width*0.5)*scale);
+            center.y = cvRound((r->y + nr->y + nr->height*0.5)*scale);
+            radius = cvRound((nr->width + nr->height)*0.25*scale);
+            circle( img, center, radius, colors[3], 3, 8, 0 );
+        }
+    }
+    cv::imshow( "result", img );
 }

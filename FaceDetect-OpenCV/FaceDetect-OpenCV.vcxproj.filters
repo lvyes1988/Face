@@ -13,10 +13,200 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="objdetect">
+      <UniqueIdentifier>{6b3c52b6-a5fa-43c0-8e0e-4d5003ee199f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core">
+      <UniqueIdentifier>{f92b4168-817c-49bd-b2d0-7c83699a3660}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="highgui">
+      <UniqueIdentifier>{49262873-bbe7-4658-8958-d5c88f350cd6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="core-src\algorithm.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core-src\alloc.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core-src\arithm.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core-src\array.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core-src\cmdparser.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core-src\convert.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core-src\copy.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core-src\datastructs.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core-src\drawing.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core-src\dxt.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core-src\gl_core_3_1.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core-src\gpumat.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core-src\lapack.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core-src\mathfuncs.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core-src\matmul.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core-src\matop.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core-src\matrix.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core-src\opengl_interop.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core-src\opengl_interop_deprecated.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core-src\out.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core-src\parallel.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core-src\persistence.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core-src\precomp.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core-src\rand.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core-src\stat.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core-src\system.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="core-src\tables.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="objdetect-src\cascadedetect.cpp">
+      <Filter>objdetect</Filter>
+    </ClCompile>
+    <ClCompile Include="objdetect-src\datamatrix.cpp">
+      <Filter>objdetect</Filter>
+    </ClCompile>
+    <ClCompile Include="objdetect-src\distancetransform.cpp">
+      <Filter>objdetect</Filter>
+    </ClCompile>
+    <ClCompile Include="objdetect-src\featurepyramid.cpp">
+      <Filter>objdetect</Filter>
+    </ClCompile>
+    <ClCompile Include="objdetect-src\fft.cpp">
+      <Filter>objdetect</Filter>
+    </ClCompile>
+    <ClCompile Include="objdetect-src\haar.cpp">
+      <Filter>objdetect</Filter>
+    </ClCompile>
+    <ClCompile Include="objdetect-src\hog.cpp">
+      <Filter>objdetect</Filter>
+    </ClCompile>
+    <ClCompile Include="objdetect-src\latentsvm.cpp">
+      <Filter>objdetect</Filter>
+    </ClCompile>
+    <ClCompile Include="objdetect-src\latentsvmdetector.cpp">
+      <Filter>objdetect</Filter>
+    </ClCompile>
+    <ClCompile Include="objdetect-src\linemod.cpp">
+      <Filter>objdetect</Filter>
+    </ClCompile>
+    <ClCompile Include="objdetect-src\lsvmparser.cpp">
+      <Filter>objdetect</Filter>
+    </ClCompile>
+    <ClCompile Include="objdetect-src\lsvmtbbversion.cpp">
+      <Filter>objdetect</Filter>
+    </ClCompile>
+    <ClCompile Include="objdetect-src\matching.cpp">
+      <Filter>objdetect</Filter>
+    </ClCompile>
+    <ClCompile Include="objdetect-src\objdetect_init.cpp">
+      <Filter>objdetect</Filter>
+    </ClCompile>
+    <ClCompile Include="objdetect-src\precomp.cpp">
+      <Filter>objdetect</Filter>
+    </ClCompile>
+    <ClCompile Include="objdetect-src\resizeimg.cpp">
+      <Filter>objdetect</Filter>
+    </ClCompile>
+    <ClCompile Include="objdetect-src\routine.cpp">
+      <Filter>objdetect</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="core-src\gl_core_3_1.hpp">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="core-src\precomp.hpp">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="objdetect-src\_latentsvm.h">
+      <Filter>objdetect</Filter>
+    </ClInclude>
+    <ClInclude Include="objdetect-src\_lsvm_distancetransform.h">
+      <Filter>objdetect</Filter>
+    </ClInclude>
+    <ClInclude Include="objdetect-src\_lsvm_error.h">
+      <Filter>objdetect</Filter>
+    </ClInclude>
+    <ClInclude Include="objdetect-src\_lsvm_fft.h">
+      <Filter>objdetect</Filter>
+    </ClInclude>
+    <ClInclude Include="objdetect-src\_lsvm_matching.h">
+      <Filter>objdetect</Filter>
+    </ClInclude>
+    <ClInclude Include="objdetect-src\_lsvm_resizeimg.h">
+      <Filter>objdetect</Filter>
+    </ClInclude>
+    <ClInclude Include="objdetect-src\_lsvm_routine.h">
+      <Filter>objdetect</Filter>
+    </ClInclude>
+    <ClInclude Include="objdetect-src\_lsvm_tbbversion.h">
+      <Filter>objdetect</Filter>
+    </ClInclude>
+    <ClInclude Include="objdetect-src\_lsvm_types.h">
+      <Filter>objdetect</Filter>
+    </ClInclude>
+    <ClInclude Include="objdetect-src\_lsvmparser.h">
+      <Filter>objdetect</Filter>
+    </ClInclude>
+    <ClInclude Include="objdetect-src\cascadedetect.hpp">
+      <Filter>objdetect</Filter>
+    </ClInclude>
+    <ClInclude Include="objdetect-src\precomp.hpp">
+      <Filter>objdetect</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="objdetect-src\normal_lut.i">
+      <Filter>objdetect</Filter>
+    </None>
   </ItemGroup>
 </Project>

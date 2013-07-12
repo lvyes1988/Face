@@ -37,7 +37,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>E:\Upload\GitHub\Face\OpenCV210\include\opencv;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)OpenCV/include;$(IncludePath)</IncludePath>
     <ExecutablePath>$(ExecutablePath)</ExecutablePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -47,8 +47,8 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>E:\Upload\GitHub\Face\OpenCV210\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>cv210.lib;cxcore210.lib;highgui210.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)OpenCV\lib;$(SolutionDir)OpenCV\3rdparty\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opencv_highgui244.lib;opencv_imgproc244.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -65,7 +65,70 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="core-src\algorithm.cpp" />
+    <ClCompile Include="core-src\alloc.cpp" />
+    <ClCompile Include="core-src\arithm.cpp" />
+    <ClCompile Include="core-src\array.cpp" />
+    <ClCompile Include="core-src\cmdparser.cpp" />
+    <ClCompile Include="core-src\convert.cpp" />
+    <ClCompile Include="core-src\copy.cpp" />
+    <ClCompile Include="core-src\datastructs.cpp" />
+    <ClCompile Include="core-src\drawing.cpp" />
+    <ClCompile Include="core-src\dxt.cpp" />
+    <ClCompile Include="core-src\gl_core_3_1.cpp" />
+    <ClCompile Include="core-src\gpumat.cpp" />
+    <ClCompile Include="core-src\lapack.cpp" />
+    <ClCompile Include="core-src\mathfuncs.cpp" />
+    <ClCompile Include="core-src\matmul.cpp" />
+    <ClCompile Include="core-src\matop.cpp" />
+    <ClCompile Include="core-src\matrix.cpp" />
+    <ClCompile Include="core-src\opengl_interop.cpp" />
+    <ClCompile Include="core-src\opengl_interop_deprecated.cpp" />
+    <ClCompile Include="core-src\out.cpp" />
+    <ClCompile Include="core-src\parallel.cpp" />
+    <ClCompile Include="core-src\persistence.cpp" />
+    <ClCompile Include="core-src\precomp.cpp" />
+    <ClCompile Include="core-src\rand.cpp" />
+    <ClCompile Include="core-src\stat.cpp" />
+    <ClCompile Include="core-src\system.cpp" />
+    <ClCompile Include="core-src\tables.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="objdetect-src\cascadedetect.cpp" />
+    <ClCompile Include="objdetect-src\datamatrix.cpp" />
+    <ClCompile Include="objdetect-src\distancetransform.cpp" />
+    <ClCompile Include="objdetect-src\featurepyramid.cpp" />
+    <ClCompile Include="objdetect-src\fft.cpp" />
+    <ClCompile Include="objdetect-src\haar.cpp" />
+    <ClCompile Include="objdetect-src\hog.cpp" />
+    <ClCompile Include="objdetect-src\latentsvm.cpp" />
+    <ClCompile Include="objdetect-src\latentsvmdetector.cpp" />
+    <ClCompile Include="objdetect-src\linemod.cpp" />
+    <ClCompile Include="objdetect-src\lsvmparser.cpp" />
+    <ClCompile Include="objdetect-src\lsvmtbbversion.cpp" />
+    <ClCompile Include="objdetect-src\matching.cpp" />
+    <ClCompile Include="objdetect-src\objdetect_init.cpp" />
+    <ClCompile Include="objdetect-src\precomp.cpp" />
+    <ClCompile Include="objdetect-src\resizeimg.cpp" />
+    <ClCompile Include="objdetect-src\routine.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="core-src\gl_core_3_1.hpp" />
+    <ClInclude Include="core-src\precomp.hpp" />
+    <ClInclude Include="objdetect-src\cascadedetect.hpp" />
+    <ClInclude Include="objdetect-src\precomp.hpp" />
+    <ClInclude Include="objdetect-src\_latentsvm.h" />
+    <ClInclude Include="objdetect-src\_lsvmparser.h" />
+    <ClInclude Include="objdetect-src\_lsvm_distancetransform.h" />
+    <ClInclude Include="objdetect-src\_lsvm_error.h" />
+    <ClInclude Include="objdetect-src\_lsvm_fft.h" />
+    <ClInclude Include="objdetect-src\_lsvm_matching.h" />
+    <ClInclude Include="objdetect-src\_lsvm_resizeimg.h" />
+    <ClInclude Include="objdetect-src\_lsvm_routine.h" />
+    <ClInclude Include="objdetect-src\_lsvm_tbbversion.h" />
+    <ClInclude Include="objdetect-src\_lsvm_types.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="objdetect-src\normal_lut.i" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
